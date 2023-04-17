@@ -95,16 +95,6 @@ jobs:
       - script: $(Build.SourcesDirectory)/eng/install-native-dependencies.sh $(osGroup)
         displayName: Install native dependencies
 
-    # Build core/libraries dependencies of test build
-    - script: $(Build.SourcesDirectory)/build$(scriptExt) $(liveRuntimeBuildParams) $(crossArg) $(compilerArg)
-      displayName: Build coreclr/libs components needed by test build
-
-    - ${{ if in(parameters.osGroup, 'osx', 'ios', 'tvos') }}:
-      - script: |
-          du -sh $(Build.SourcesDirectory)/*
-          df -h
-        displayName: Disk Usage before Build
-
     # Build managed test components
     - script: $(Build.SourcesDirectory)/src/tests/build$(scriptExt) $(logRootNameArg)Managed allTargets skipnative skipgeneratelayout skiptestwrappers $(buildConfig) $(archType) $(runtimeFlavorArgs) $(crossArg) $(priorityArg) $(testTreeFilterArg) ci /p:TargetOS=AnyOS
       displayName: Build managed test components
